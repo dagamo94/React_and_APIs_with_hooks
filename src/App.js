@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
 import AlbumList from "./AlbumList";
@@ -8,7 +8,23 @@ function App() {
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
 
-  // Load data from https://jsonplaceholder.typicode.com/albums?userId=${user.id}
+  /* **** SET DOCUMENT TITLE **** */
+  useEffect(() => {
+    document.title = "Awesome Album App";
+  }, []);
+
+  /* **** LOAD USERS AT PAGE LOAD/RENDER ****/
+  const usersURL = "https://jsonplaceholder.typicode.com/users";
+  useEffect(() => {
+    async function loadUsers () {
+        const response = await fetch(usersURL);
+        const usersFromAPI = await response.json();
+        setUsers(usersFromAPI)
+    }
+    loadUsers();
+  }, []);
+
+  /* **** LOAD ALBUMS ON CHANGE OF 'users' STATE ****/
 
   return (
     <div className="App">
